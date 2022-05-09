@@ -8,6 +8,7 @@
 mkdir -p sensors_pkg_ws/src
 cd sensors_pkg_ws/src
 git clone https://github.com/Adlink-ROS/sensors_pkg.git
+cd ../
 ```
 
 * Build
