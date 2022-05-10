@@ -26,3 +26,9 @@ source install/local_setup.bash
 ```bash
 ros2 run sensors_pkg sensor_subscriber
 ```
+
+* Use message filter to get data from camera and lidar.
+
+```bash
+ros2 run sensors_pkg msg_filter
+```
