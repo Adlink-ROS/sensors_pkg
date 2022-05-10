@@ -19,7 +19,7 @@ private:
     }
 public:
     SensorsSubscriber() : Node("sensors_subscriber") {
-        _image_sub.subscribe(this, "image");
+        _image_sub.subscribe(this, "camera/image_raw");
         _lidar_sub.subscribe(this, "velodyne_packets");
         typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::msg::Image, velodyne_msgs::msg::VelodyneScan> approximate_policy;
         message_filters::Synchronizer<approximate_policy> syncApproximate(approximate_policy(10), _image_sub, _lidar_sub);

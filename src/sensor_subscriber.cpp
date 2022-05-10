@@ -18,7 +18,7 @@ private:
     }
 public:
     SensorsSubscriber() : Node("sensors_subscriber") {
-        _image_sub = this->create_subscription<sensor_msgs::msg::Image>("image", 10, std::bind(&SensorsSubscriber::image_callback, this, _1));
+        _image_sub = this->create_subscription<sensor_msgs::msg::Image>("camera/image_raw", 10, std::bind(&SensorsSubscriber::image_callback, this, _1));
         _lidar_sub = this->create_subscription<velodyne_msgs::msg::VelodyneScan>("velodyne_packets", 10, std::bind(&SensorsSubscriber::lidar_callback, this, _1));
     }
 };
