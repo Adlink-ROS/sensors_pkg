@@ -32,3 +32,12 @@ ros2 run sensors_pkg sensor_subscriber
 ```bash
 ros2 run sensors_pkg msg_filter
 ```
+
+# Test
+
+To test the program, you need to run sample rosbag
+
+```bash
+tar zvxf resource/rosbag2_2022_05_10-02_06_12.tar.gz
+ros2 bag play rosbag2_2022_05_10-02_06_12
+```
