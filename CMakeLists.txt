@@ -22,7 +22,6 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(velodyne_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 
 add_executable(sensor_subscriber src/sensor_subscriber.cpp)
@@ -30,8 +29,8 @@ add_executable(msg_filter src/msg_filter.cpp)
 target_include_directories(msg_filter PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(sensor_subscriber rclcpp sensor_msgs velodyne_msgs)
-ament_target_dependencies(msg_filter rclcpp sensor_msgs velodyne_msgs message_filters)
+ament_target_dependencies(sensor_subscriber rclcpp sensor_msgs)
+ament_target_dependencies(msg_filter rclcpp sensor_msgs message_filters)
 
 install(TARGETS sensor_subscriber
   DESTINATION lib/${PROJECT_NAME})
