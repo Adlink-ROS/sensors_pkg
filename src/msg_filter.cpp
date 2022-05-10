@@ -1,42 +1,38 @@
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "sensor_msgs/msg/image.hpp"
+#include "velodyne_msgs/msg/velodyne_scan.hpp"
+#include "message_filters/subscriber.h"
+#include "message_filters/synchronizer.h"
+#include "message_filters/sync_policies/approximate_time.h"
 
 using namespace std;
+using std::placeholders::_1;
 
 class SensorsSubscriber : public rclcpp::Node
 {
 private:
-    void callback() {}
-public:
-#if 0
-    message_filters::Subscriber<sensor_msgs::msg::Image> image_sub_;
-    message_filters::Subscriber<sensor_msgs::msg::Image> disparity_sub_;
-
-    MultiSubscriber(const std::string& name)
-    : Node(name), 
-      image_sub_(message_filters::Subscriber<sensor_msgs::msg::Image>(this, "image_color_topic")),
-      disparity_sub_(message_filters::Subscriber<sensor_msgs::msg::Image>(this, "image_disparity_topic"))
-    {
-
-      typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::msg::Image, sensor_msgs::msg::Image> approximate_policy;
-      message_filters::Synchronizer<approximate_policy>syncApproximate(approximate_policy(10), image_sub_, disparity_sub_);
-
-      syncApproximate.registerCallback(&MultSubscriber::disparityCb,this);
-
-
+    message_filters::Subscriber<sensor_msgs::msg::Image> _image_sub;
+    message_filters::Subscriber<velodyne_msgs::msg::VelodyneScan> _lidar_sub;
+    void callback(const sensor_msgs::msg::Image::SharedPtr image_msg, const velodyne_msgs::msg::VelodyneScan::SharedPtr lidar_msg) {
+        RCLCPP_INFO(this->get_logger(), "image received timestamp %d %d", image_msg->header.stamp.sec, lidar_msg->header.stamp.nanosec);
+        RCLCPP_INFO(this->get_logger(), "lidar received timestamp %d %d", image_msg->header.stamp.sec, lidar_msg->header.stamp.nanosec);
     }
-    private:
-    void disparityCb(const sensor_msgs::msg::Image::SharedPtr disparity_msg, const sensor_msgs::msg::Image::SharedPtr color_msg){
-   //dosomething
-                }
-#endif
+public:
+    SensorsSubscriber() : Node("sensors_subscriber") {
+        _image_sub.subscribe(this, "image");
+        _lidar_sub.subscribe(this, "velodyne_packets");
+        typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::msg::Image, velodyne_msgs::msg::VelodyneScan> approximate_policy;
+        message_filters::Synchronizer<approximate_policy> syncApproximate(approximate_policy(10), _image_sub, _lidar_sub);
+
+        syncApproximate.registerCallback(&SensorsSubscriber::callback, this);
+    }
 };
 
 int main(int argc, char ** argv)
 {
-  (void) argc;
-  (void) argv;
-
-  cout << "Subscribe to lidar and camera topic" << endl;
-  return 0;
+    rclcpp::init(argc, argv);
+    cout << "Start to subscribe lidar and camera topic" << endl;
+    rclcpp::spin(std::make_shared<SensorsSubscriber>());
+    rclcpp::shutdown();
+    return 0;
 }
