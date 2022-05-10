@@ -14,8 +14,14 @@ private:
     message_filters::Subscriber<sensor_msgs::msg::Image> _image_sub;
     message_filters::Subscriber<velodyne_msgs::msg::VelodyneScan> _lidar_sub;
     void callback(const sensor_msgs::msg::Image::SharedPtr image_msg, const velodyne_msgs::msg::VelodyneScan::SharedPtr lidar_msg) {
-        RCLCPP_INFO(this->get_logger(), "image received timestamp %d %d", image_msg->header.stamp.sec, lidar_msg->header.stamp.nanosec);
-        RCLCPP_INFO(this->get_logger(), "lidar received timestamp %d %d", image_msg->header.stamp.sec, lidar_msg->header.stamp.nanosec);
+        rclcpp::Time image_ts = image_msg->header.stamp;
+        rclcpp::Time lidar_ts = lidar_msg->header.stamp;
+        //RCLCPP_INFO(this->get_logger(), "image received timestamp %d s %d ns", image_msg->header.stamp.sec, image_msg->header.stamp.nanosec);
+        RCLCPP_INFO(this->get_logger(), "image received timestamp %lf s (%d ns)", image_ts.seconds(), image_ts.nanoseconds());
+        //RCLCPP_INFO(this->get_logger(), "lidar received timestamp %d s %d ns", lidar_msg->header.stamp.sec, lidar_msg->header.stamp.nanosec);
+        RCLCPP_INFO(this->get_logger(), "lidar received timestamp %lf s (%d ns)", lidar_ts.seconds(), lidar_ts.nanoseconds());
+        rclcpp::Duration diff_ts = image_ts-lidar_ts;
+        RCLCPP_INFO(this->get_logger(), "Time diff (image - lidar) %lf s (%d ns)", diff_ts.seconds(), diff_ts.nanoseconds());
     }
 public:
     SensorsSubscriber() : Node("sensors_subscriber") {
