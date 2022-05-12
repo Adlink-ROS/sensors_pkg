@@ -15,7 +15,7 @@ cd ../
 
 ```bash
 rosdep install --from-paths src --ignore-src -r -y
-colcon build
+colcon build --symlink-install
 source install/local_setup.bash
 ```
 
@@ -31,6 +31,12 @@ ros2 run sensors_pkg sensor_subscriber
 
 ```bash
 ros2 run sensors_pkg msg_filter
+```
+
+* Launch all the sensors and message filter at the same time
+
+```bash
+ros2 launch sensors_pkg launch_sensors.launch.py
 ```
 
 # Test
