@@ -1,0 +1,13 @@
+repositories:
+  gmsl_ros2:
+    type: git
+    url: https://github.com/Adlink-ROS/gmsl_ros2.git
+    version: main
+  bluespace_ai_xsens_ros_mti_driver:
+    type: git
+    url: https://github.com/bluespace-ai/bluespace_ai_xsens_ros_mti_driver.git
+    version: ros2_0_foxy
+  sensors_pkg:
+    type: git
+    url: https://github.com/Adlink-ROS/sensors_pkg.git
+    version: main
