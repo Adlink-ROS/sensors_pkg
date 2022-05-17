@@ -25,16 +25,25 @@ find_package(sensor_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 
 add_executable(sensor_subscriber src/sensor_subscriber.cpp)
+ament_target_dependencies(sensor_subscriber rclcpp sensor_msgs)
+
 add_executable(msg_filter src/msg_filter.cpp)
 target_include_directories(msg_filter PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(sensor_subscriber rclcpp sensor_msgs)
 ament_target_dependencies(msg_filter rclcpp sensor_msgs message_filters)
+
+add_executable(msg_filter_with_imu src/msg_filter_with_imu.cpp)
+target_include_directories(msg_filter_with_imu PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(msg_filter_with_imu rclcpp sensor_msgs message_filters)
 
 install(TARGETS sensor_subscriber
   DESTINATION lib/${PROJECT_NAME})
 install(TARGETS msg_filter
+  DESTINATION lib/${PROJECT_NAME})
+install(TARGETS msg_filter_with_imu
   DESTINATION lib/${PROJECT_NAME})
 
 # Install launch files.
