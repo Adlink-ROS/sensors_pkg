@@ -40,16 +40,17 @@ source install/local_setup.bash
 ros2 run sensors_pkg sensor_subscriber
 ```
 
-* Use message filter to get data from camera, lidar and imu.
-
-```bash
-ros2 run sensors_pkg msg_filter
-```
-
-* Launch all the sensors and message filter at the same time
+* Launch camera, lidar and message filter at the same time
 
 ```bash
 ros2 launch sensors_pkg launch_sensors.launch.py
+```
+
+* If you also want to enable IMU, add the option.
+  - However, it'll affect the performance of message filter, so default is disable.
+
+```bash
+ros2 launch sensors_pkg launch_sensors.launch.py enable_imu:=true
 ```
 
 # Test

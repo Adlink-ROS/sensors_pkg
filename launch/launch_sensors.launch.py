@@ -10,7 +10,7 @@ from launch.conditions import IfCondition
 def generate_launch_description():
     camera_type = LaunchConfiguration('camera_type', default='argus')
     open_rviz = LaunchConfiguration('open_rviz', default='false')
-    enable_imu = LaunchConfiguration('enable_imu', default='true')
+    enable_imu = LaunchConfiguration('enable_imu', default='false')
 
     return LaunchDescription([
         IncludeLaunchDescription(
